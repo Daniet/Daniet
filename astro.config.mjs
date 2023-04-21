@@ -7,6 +7,8 @@ import compressor from "astro-compressor";
 
 // https://astro.build/config
 export default defineConfig({
+  site: "https://daniet.github.io",
+  base: "/Daniet",
   integrations: [
     tailwind(),
     partytown(),
