@@ -4,15 +4,17 @@ import { UIPage } from "../../ui/vue/containers";
 import { UITextField } from "../../ui/vue/form";
 import { UIShared } from "../../ui/vue/social";
 
-const props = defineProps<{
-  whatsapp: string;
-}>();
+const {
+  PUBLIC_WHATSAPP: WHATSAPP,
+  PUBLIC_SHARED_TITLE: TITLE,
+  PUBLIC_SHARED_TEXT: TEXT,
+} = import.meta.env;
 
 const contact = ref({ name: undefined, subject: undefined, msg: undefined });
 const submit = () => {
   const { name, subject, msg } = contact.value;
   window.open(
-    `https://api.whatsapp.com/send/?phone=${props.whatsapp}&text=hola soy ${name} te escribo para ${subject}\n${msg}`,
+    `https://api.whatsapp.com/send/?phone=${WHATSAPP}&text=hola soy ${name} te escribo para ${subject}, ${msg}`,
     `_whatsapp`
   );
 };
@@ -25,6 +27,6 @@ const submit = () => {
       <UITextField field="mensaje" v-model="contact.msg" />
       <button type="submit">enviar</button>
     </form>
-    <UIShared />
+    <UIShared :title="TITLE" :text="TEXT" />
   </UIPage>
 </template>
