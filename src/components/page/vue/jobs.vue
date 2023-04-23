@@ -33,3 +33,9 @@ const selectJob = (select: number) => (selectedJob.value = select);
     </div>
   </UIPage>
 </template>
+
+<style scoped>
+p {
+  text-align: justify;
+}
+</style>

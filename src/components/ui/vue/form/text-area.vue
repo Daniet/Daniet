@@ -16,12 +16,14 @@ const value = computed({
 });
 </script>
 <template>
-  <div class="flex items-center pb-2 border-b-2 border-black">
-    <label :for="name">{{ field }}:</label>
-    <input
+  <div
+    class="flex flex-col items-center pb-2 border-b-2 border-black justify-self-start"
+  >
+    <label class="w-full" :for="name">{{ field }}:</label>
+    <textarea
       v-model="value"
       :id="name"
-      class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+      class="appearance-none bg-transparent border-none w-full text-gray-700 py-1 leading-tight focus:outline-none"
       autocomplete="off"
     />
   </div>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { UIPage } from "../../ui/vue/containers";
-import { UITextField } from "../../ui/vue/form";
+import { ContactUsView } from "../../form";
 import { UIShared } from "../../ui/vue/social";
 
 const {
@@ -21,12 +21,11 @@ const submit = () => {
 </script>
 <template>
   <UIPage id="/contact">
-    <form @submit.prevent="submit" class="flex flex-col">
-      <UITextField field="nombre" v-model="contact.name" />
-      <UITextField field="asunto" v-model="contact.subject" />
-      <UITextField field="mensaje" v-model="contact.msg" />
-      <button type="submit">enviar</button>
-    </form>
-    <UIShared :title="TITLE" :text="TEXT" />
+    <div class="flex flex-col justify-end h-full pb-16">
+      <div class="w-6/12 mx-auto">
+        <ContactUsView />
+      </div>
+      <UIShared :title="TITLE" :text="TEXT" />
+    </div>
   </UIPage>
 </template>
