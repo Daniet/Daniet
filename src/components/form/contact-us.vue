@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { UITextArea, UITextField } from "../../components/ui/vue/form";
 import { TypeButton, UIButton } from "../../components/ui/vue/buttons";
+import { StateButton } from "../ui/vue/buttons/type";
 
 const { PUBLIC_WHATSAPP: WHATSAPP } = import.meta.env;
 
@@ -11,8 +12,16 @@ const fieldAnimation = ref({
   isShow: true,
   height: 0,
 });
+
+const stateFrom = ref({
+  stateButton: StateButton.NORMAL,
+});
+
 const submit = () => {
   fieldAnimation.value.height = fields.value.clientHeight;
+  stateFrom.value = {
+    stateButton: StateButton.MIN,
+  };
   // const { name, subject, msg } = contact.value;
   // window.open(
   //     `https://api.whatsapp.com/send/?phone=${WHATSAPP}&text=hola soy ${name} te escribo para ${subject}, ${msg}`,
@@ -20,7 +29,12 @@ const submit = () => {
   // );
   // console.log(fields.value.clientHeight)
   fieldAnimation.value.isShow = false;
-  setTimeout(() => (fieldAnimation.value.isShow = true), 2000);
+  setTimeout(() => {
+    fieldAnimation.value.isShow = true;
+    stateFrom.value = {
+      stateButton: StateButton.NORMAL,
+    };
+  }, 2000);
 };
 </script>
 <template>
@@ -59,7 +73,9 @@ const submit = () => {
         class="flex justify-center space-x-2 transition-component"
         :class="[fieldAnimation.isShow ? 'pt-3 my-0' : 'pt-0 my-1']"
       >
-        <UIButton :type="TypeButton.SUBMIT"> Whatsapp </UIButton>
+        <UIButton :type="TypeButton.SUBMIT" :state="stateFrom.stateButton"
+          >Whatsapp</UIButton
+        >
       </div>
     </form>
   </div>

@@ -19,6 +19,9 @@ dependencies:
   astro-compressor:
     specifier: ^0.4.0
     version: 0.4.0
+  material-icons:
+    specifier: ^1.13.5
+    version: 1.13.5
   tailwindcss:
     specifier: ^3.0.24
     version: 3.3.1(postcss@8.4.23)
@@ -3269,6 +3272,13 @@ packages:
     resolution:
       {
         integrity: sha512-Z1NL3Tb1M9wH4XESsCDEksWoKTdlUafKc4pt0GRwjUyXaCFZ+dc3g2erqB6zm3szA2IUSi7VnPI+o/9jnxh9hw==,
+      }
+    dev: false
+
+  /material-icons@1.13.5:
+    resolution:
+      {
+        integrity: sha512-LIgq4E21ifLiEsBY+44OSZNvsZHLTnFMrYsFDTfS6wovo9kpABnDTfYwJxAqPr1cL5YLZyf2nWoYUR/dNZp/Ow==,
       }
     dev: false
 
