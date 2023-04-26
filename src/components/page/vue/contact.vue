@@ -24,8 +24,8 @@ const submit = () => {
     <div class="flex flex-col justify-end h-full pb-16">
       <div class="w-6/12 mx-auto">
         <ContactUsView />
+        <UIShared :title="TITLE" :text="TEXT" />
       </div>
-      <UIShared :title="TITLE" :text="TEXT" />
     </div>
   </UIPage>
 </template>

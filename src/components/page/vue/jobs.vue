@@ -18,6 +18,7 @@ const selectJob = (select: number) => (selectedJob.value = select);
       <div>
         <div v-for="(job, key) in data" :key="key">
           <article
+            class="bg-white p-2"
             :class="[key == selectedJob ? '' : 'hidden']"
             v-html="markdown(job.content)"
           />
@@ -25,7 +26,10 @@ const selectJob = (select: number) => (selectedJob.value = select);
       </div>
       <div class="w-full flex space-x-4 mb-16">
         <div v-for="(job, key) in data" :key="key">
-          <a class="cursor-pointer" @click="() => selectJob(key)">
+          <a
+            class="cursor-pointer bg-white px-3 py-1"
+            @click="() => selectJob(key)"
+          >
             {{ job.title }}
           </a>
         </div>

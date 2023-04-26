@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import { computed } from "vue";
+import type { TypeTextField as type } from "./type";
 
-const props = defineProps<{ field: string; name: string; modelValue: any }>();
+const props = defineProps<{
+  field?: string;
+  name?: string;
+  modelValue: any;
+  type?: type;
+}>();
 const emit = defineEmits<{
   (event: "update:modelValue", payload: string): void;
 }>();
@@ -17,7 +23,7 @@ const value = computed({
 </script>
 <template>
   <div class="flex items-center pb-2 border-b-2 border-black">
-    <label :for="name">{{ field }}:</label>
+    <label :for="name">{{ field }}</label>
     <input
       v-model="value"
       :id="name"

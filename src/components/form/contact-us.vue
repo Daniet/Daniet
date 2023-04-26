@@ -48,34 +48,17 @@ const submit = () => {
   >
     <form
       @submit.prevent="submit"
-      class="bg-white rounded-md overflow-hidden transition-component"
+      class="rounded-md overflow-hidden transition-component"
       :class="[fieldAnimation.isShow ? 'px-3 py-3 my-0' : 'px-0 py-0 my-5']"
     >
-      <div
-        class="space-y-3 transition-component"
-        ref="fields"
-        :class="[
-          fieldAnimation.isShow
-            ? 'opacity-100 scale-100'
-            : 'opacity-100 scale-0',
-        ]"
-        :style="{
-          marginTop: fieldAnimation.isShow
-            ? '0px'
-            : `${fieldAnimation.height * -1}px`,
-        }"
-      >
-        <UITextField name="name" field="nombre" v-model="contact.name" />
-        <UITextField name="subject" field="asunto" v-model="contact.subject" />
-        <UITextArea name="msg" field="mensaje" v-model="contact.msg" />
+      <div class="text-white bg-black mx-2 mt-2 mb-6 rounded-xl px-3 py-1">
+        Heyy
       </div>
-      <div
-        class="flex justify-center space-x-2 transition-component"
-        :class="[fieldAnimation.isShow ? 'pt-3 my-0' : 'pt-0 my-1']"
-      >
-        <UIButton :type="TypeButton.SUBMIT" :state="stateFrom.stateButton"
-          >Whatsapp</UIButton
-        >
+      <div class="h-96"></div>
+      <div class="">
+        <div class="px-3 py-1 mx-2 my-2 bg-blue-500 text-white rounded-xl">
+          mensaje
+        </div>
       </div>
     </form>
   </div>

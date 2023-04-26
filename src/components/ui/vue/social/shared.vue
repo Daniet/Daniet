@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import iconFacebook from "../../../../assets/images/icons/facebook.svg";
+import iconPinterest from "../../../../assets/images/icons/pinterest.svg";
+import iconReddit from "../../../../assets/images/icons/reddit.svg";
+import iconTwitter from "../../../../assets/images/icons/twitter.svg";
 import { onMounted, ref } from "vue";
 
 const props = defineProps<{
@@ -15,35 +19,50 @@ enum SHARE_LINK {
   PINTEREST = "https://co.pinterest.com/pin/create/button/?",
 }
 
-onMounted(() => (url.value = `${location.origin}${location.pathname}`));
+const social = ref();
+
+onMounted(() => {
+  url.value = `${location.origin}${location.pathname}`;
+  social.value = [
+    {
+      href: `${SHARE_LINK.FACEBOOK}${url.value}`,
+      icon: iconFacebook,
+      name: "facebook",
+    },
+    {
+      href: `${SHARE_LINK.TWITTER}url=${url.value}&text=${props.text}`,
+      icon: iconTwitter,
+      name: "twitter",
+    },
+    {
+      href: `${SHARE_LINK.REDDIT}url=${url.value}&title=${props.title}`,
+      icon: iconReddit,
+      name: "reddit",
+    },
+    {
+      href: `${SHARE_LINK.PINTEREST}url=${url.value}&description=${props.title}`,
+      icon: iconPinterest,
+      name: "pinterest",
+    },
+  ];
+});
 </script>
 <template>
-  <div>
-    <ul>
-      <li>
-        <a target="_shared" :href="`${SHARE_LINK.FACEBOOK}${url}`">facebook</a>
-      </li>
-      <li>
-        <a
-          target="_shared"
-          :href="`${SHARE_LINK.TWITTER}url=${url}&text=${text}`"
-          >Twitter</a
-        >
-      </li>
-      <li>
-        <a
-          target="_shared"
-          :href="`${SHARE_LINK.REDDIT}url=${url}&title=${title}`"
-          >Reddit</a
-        >
-      </li>
-      <li>
-        <a
-          target="_shared"
-          :href="`${SHARE_LINK.PINTEREST}url=${url}&description=${title}`"
-          >pinterest</a
-        >
-      </li>
-    </ul>
+  <div class="flex space-x-3 items-center w-full justify-between px-3 py-1">
+    <div class="flex space-x-2">
+      <a
+        v-for="(item, key) in social"
+        :key="key"
+        target="_shared"
+        :href="item.href"
+      >
+        <img class="w-8 h-8 object-contain" :src="item.icon" :alt="item.name" />
+      </a>
+    </div>
+    <span
+      class="material-symbols-rounded cursor-pointer bg-black text-white p-1 rounded-md"
+    >
+      share
+    </span>
   </div>
 </template>
