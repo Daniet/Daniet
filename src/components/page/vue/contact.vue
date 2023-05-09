@@ -21,8 +21,8 @@ const submit = () => {
 </script>
 <template>
   <UIPage id="/contact">
-    <div class="flex flex-col justify-end h-full pb-16">
-      <div class="w-6/12 mx-auto">
+    <div class="flex h-full pb-24 pt-8">
+      <div class="w-6/12 mx-auto h-full">
         <ContactUsView />
         <UIShared :title="TITLE" :text="TEXT" />
       </div>

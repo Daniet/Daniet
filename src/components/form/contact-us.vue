@@ -1,71 +1,102 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { UITextArea, UITextField } from "../../components/ui/vue/form";
-import { TypeButton, UIButton } from "../../components/ui/vue/buttons";
-import { StateButton } from "../ui/vue/buttons/type";
+import { ref, watch } from "vue";
 
-const { PUBLIC_WHATSAPP: WHATSAPP } = import.meta.env;
+import { sleep } from "../../util";
 
-const contact = ref({ name: undefined, subject: undefined, msg: undefined });
-const fields = ref();
-const fieldAnimation = ref({
-  isShow: true,
-  height: 0,
+const textField = ref();
+const newMsg = ref();
+
+const inputChat = ref("");
+const msg = ref<string[]>([]);
+
+const msgAnimation = ref<{ status: boolean; style: any }>({
+  status: false,
+  style: {
+    height: "40px",
+    width: "100%",
+    transition: "0s",
+    transform: `translate(0px, 100%)`,
+  },
 });
 
-const stateFrom = ref({
-  stateButton: StateButton.NORMAL,
-});
-
-const submit = () => {
-  fieldAnimation.value.height = fields.value.clientHeight;
-  stateFrom.value = {
-    stateButton: StateButton.MIN,
+const setStyleMsg = (style: any) => {
+  msgAnimation.value = {
+    ...msgAnimation.value,
+    style: { ...msgAnimation.value.style, ...style },
   };
-  // const { name, subject, msg } = contact.value;
-  // window.open(
-  //     `https://api.whatsapp.com/send/?phone=${WHATSAPP}&text=hola soy ${name} te escribo para ${subject}, ${msg}`,
-  //     `_whatsapp`
-  // );
-  // console.log(fields.value.clientHeight)
-  fieldAnimation.value.isShow = false;
-  setTimeout(() => {
-    fieldAnimation.value.isShow = true;
-    stateFrom.value = {
-      stateButton: StateButton.NORMAL,
-    };
-  }, 2000);
 };
+
+const msgAnimated = async (style: any, time: number) => {
+  setStyleMsg({ ...style, transition: `${time}s` });
+  await sleep(time);
+};
+
+const submit = async () => {
+  if (`${inputChat.value}`.trim() != "") {
+    msgAnimation.value = { ...msgAnimation.value, status: true };
+    const width = newMsg.value.clientWidth;
+    await msgAnimated(
+      {
+        width: `${textField.value.clientWidth}px`,
+        transform: `translate(0px, 100%)`,
+      },
+      0
+    );
+    await msgAnimated(
+      { width: `${width}px`, transform: `translate(0px, 0%)` },
+      1
+    );
+    msg.value = [...msg.value, inputChat.value];
+    inputChat.value = "";
+    msgAnimation.value = { ...msgAnimation.value, status: false };
+    await msgAnimated({ width: `100%`, transform: `translate(0px, 100%)` }, 0);
+  }
+};
+
+watch(inputChat, () => {
+  console.log(textField.value.clientHeight);
+  setStyleMsg({ heigth: `40px` });
+});
 </script>
 <template>
-  <div
-    class="transition-component flex flex-col justify-center"
-    :style="{
-      padding: fieldAnimation.isShow
-        ? '0px 0px'
-        : `${fieldAnimation.height / 2}px 0px`,
-    }"
-  >
-    <form
-      @submit.prevent="submit"
-      class="rounded-md overflow-hidden transition-component"
-      :class="[fieldAnimation.isShow ? 'px-3 py-3 my-0' : 'px-0 py-0 my-5']"
+  <div class="w-full h-full flex flex-col w-full">
+    <div
+      class="h-full h-full flex flex-col jufity-end justify-end overflow-hidden"
     >
-      <div class="text-white bg-black mx-2 mt-2 mb-6 rounded-xl px-3 py-1">
-        Heyy
+      <div v-for="(item, key) in msg" :key="key" class="pb-2 flex">
+        <div class="bg-white px-2 py-1">&#x2800;{{ item }}</div>
       </div>
-      <div class="h-96"></div>
-      <div class="">
-        <div class="px-3 py-1 mx-2 my-2 bg-blue-500 text-white rounded-xl">
-          mensaje
+      <div :style="{ opacity: msgAnimation.status ? 1 : 0 }">
+        <div class="new-msg bg-white flex" :style="{ ...msgAnimation?.style }">
+          <div ref="newMsg" class="px-2 py-2">
+            {{ inputChat }}
+          </div>
         </div>
       </div>
-    </form>
+      <form
+        @submit.prevent="submit"
+        class="flex space-x-2 w-full"
+        :style="{
+          transition: `${msgAnimation.status ? 1 : 0}s`,
+          paddingTop: msgAnimation.status
+            ? `${textField.clientHeight}px`
+            : `0px`,
+        }"
+      >
+        <div
+          ref="textField"
+          class="w-full px-2 py-2 bg-white"
+          :style="{ opacity: msgAnimation.status ? 0 : 1 }"
+        >
+          <input v-model="inputChat" class="w-full" />
+        </div>
+        <button type="submit" class="p-1 bg-white">enviar</button>
+      </form>
+    </div>
   </div>
 </template>
-
-<style scoped>
-.transition-component {
-  transition: 1s;
+<style>
+form {
+  transform: translate(0px, 0px);
 }
 </style>
