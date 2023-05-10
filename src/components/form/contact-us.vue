@@ -39,7 +39,7 @@ const msgAnimated = async (style: any, time: number) => {
 
 const addHistory = async (content: string) => {
   if (content.trim() != "") {
-    const width = newMsg.value.clientWidth;
+    const { clientWidth } = newMsg.value;
     await msgAnimated(
       {
         width: `${textField.value.clientWidth}px`,
@@ -48,7 +48,7 @@ const addHistory = async (content: string) => {
       0
     );
     await msgAnimated(
-      { width: `${width}px`, transform: `translate(0px, 0%)` },
+      { width: `${clientWidth}px`, transform: `translate(0px, 0%)` },
       1
     );
     msg.value = [...msg.value, content];
@@ -84,9 +84,6 @@ onMounted(nextQuestion);
     <div
       class="h-full h-full flex flex-col jufity-end justify-end overflow-hidden"
     >
-      <div class="bg-white" :style="{ width: `${msgAnimation.style.width}px` }">
-        {{ msgAnimation.isUser ? inputChat : `mensaje ${stepQuestion - 1}` }}
-      </div>
       <div v-for="(item, key) in msg" :key="key" class="pb-2 flex">
         <div class="bg-white px-2 py-1">{{ item }}</div>
       </div>
@@ -125,6 +122,12 @@ onMounted(nextQuestion);
         </div>
         <button type="submit" class="p-1 bg-white">enviar</button>
       </form>
+      <div class="bg-white">
+        {{ msgAnimation.style }}
+      </div>
+      <div class="bg-white">
+        {{ msgAnimation.isUser ? inputChat : `mensaje ${stepQuestion - 1}` }}
+      </div>
     </div>
   </div>
 </template>
