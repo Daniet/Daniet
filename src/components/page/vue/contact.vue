@@ -23,7 +23,13 @@ const submit = () => {
   <UIPage id="/contact">
     <div class="flex h-full pb-24 pt-8">
       <div class="w-6/12 mx-auto h-full">
-        <ContactUsView />
+        <ContactUsView
+          :questions="[
+            '¿Como te llamas?',
+            '¿Que te puedo Colaborar?',
+            'Cuentame un poco mas',
+          ]"
+        />
         <UIShared :title="TITLE" :text="TEXT" />
       </div>
     </div>
