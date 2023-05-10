@@ -14,8 +14,9 @@ const stepQuestion = ref(0);
 const inputChat = ref("");
 const msg = ref<string[]>([]);
 
-const msgAnimation = ref<{ status: boolean; style: any }>({
+const msgAnimation = ref<{ status: boolean; isUser: boolean; style: any }>({
   status: false,
+  isUser: false,
   style: {
     height: "40px",
     width: "100%",
@@ -38,7 +39,6 @@ const msgAnimated = async (style: any, time: number) => {
 
 const addHistory = async (content: string) => {
   if (content.trim() != "") {
-    msgAnimation.value = { ...msgAnimation.value, status: true };
     const width = newMsg.value.clientWidth;
     await msgAnimated(
       {
@@ -55,6 +55,7 @@ const addHistory = async (content: string) => {
     inputChat.value = "";
     msgAnimation.value = { ...msgAnimation.value, status: false };
     await msgAnimated({ width: `100%`, transform: `translate(0px, 100%)` }, 0);
+    msgAnimation.value = { ...msgAnimation.value, isUser: false };
   }
 };
 
@@ -63,16 +64,18 @@ const submit = async () => {
   nextQuestion();
 };
 
-const nextQuestion = () => {
-  if (stepQuestion.value < props.questions.length) {
-    addHistory(props.questions[stepQuestion.value]);
-    stepQuestion.value++;
-  }
+const nextQuestion = async () => {
+  // if (stepQuestion.value < props.questions.length) {
+  await sleep(1);
+  addHistory(`mensaje ${stepQuestion.value}`);
+  stepQuestion.value++;
+  // }
 };
 
-watch(inputChat, () =>
-  setStyleMsg({ heigth: `${textField.value.clientHeight}px` })
-);
+watch(inputChat, () => {
+  msgAnimation.value = { ...msgAnimation.value, isUser: true };
+  setStyleMsg({ heigth: `${textField.value.clientHeight}px` });
+});
 
 onMounted(nextQuestion);
 </script>
@@ -81,13 +84,21 @@ onMounted(nextQuestion);
     <div
       class="h-full h-full flex flex-col jufity-end justify-end overflow-hidden"
     >
+      <div class="bg-white" :style="{ width: `${msgAnimation.style.width}px` }">
+        {{ msgAnimation.isUser ? inputChat : `mensaje ${stepQuestion - 1}` }}
+      </div>
       <div v-for="(item, key) in msg" :key="key" class="pb-2 flex">
         <div class="bg-white px-2 py-1">{{ item }}</div>
       </div>
-      <div :style="{ opacity: msgAnimation.status ? 1 : 0 }">
-        <div class="new-msg bg-white flex" :style="{ ...msgAnimation?.style }">
+      <div :style="{ opacity: msgAnimation.status ? 1 : 1 }">
+        <div
+          class="new-msg bg-red-500 flex"
+          :style="{ ...msgAnimation?.style }"
+        >
           <div ref="newMsg" class="px-2 py-2">
-            {{ inputChat == "" ? questions[stepQuestion] : inputChat }}
+            {{
+              msgAnimation.isUser ? inputChat : `mensaje ${stepQuestion - 1}`
+            }}
           </div>
         </div>
       </div>
