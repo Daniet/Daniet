@@ -40,6 +40,7 @@ const msgAnimated = async (style: any, time: number) => {
 const addHistory = async (content: string) => {
   if (content.trim() != "") {
     const { clientWidth } = newMsg.value;
+    msgAnimation.value = { ...msgAnimation.value, status: true };
     await msgAnimated(
       {
         width: `${textField.value.clientWidth}px`,
@@ -60,16 +61,16 @@ const addHistory = async (content: string) => {
 };
 
 const submit = async () => {
-  addHistory(inputChat.value);
+  await addHistory(inputChat.value);
   nextQuestion();
 };
 
 const nextQuestion = async () => {
-  // if (stepQuestion.value < props.questions.length) {
-  await sleep(1);
-  addHistory(`mensaje ${stepQuestion.value}`);
-  stepQuestion.value++;
-  // }
+  if (stepQuestion.value < props.questions.length) {
+    await sleep(1);
+    await addHistory(props.questions[stepQuestion.value]);
+    stepQuestion.value++;
+  }
 };
 
 watch(inputChat, () => {
@@ -87,15 +88,10 @@ onMounted(nextQuestion);
       <div v-for="(item, key) in msg" :key="key" class="pb-2 flex">
         <div class="bg-white px-2 py-1">{{ item }}</div>
       </div>
-      <div :style="{ opacity: msgAnimation.status ? 1 : 1 }">
-        <div
-          class="new-msg bg-red-500 flex"
-          :style="{ ...msgAnimation?.style }"
-        >
+      <div :style="{ opacity: msgAnimation.status ? 1 : 0 }">
+        <div class="new-msg bg-white flex" :style="{ ...msgAnimation?.style }">
           <div ref="newMsg" class="px-2 py-2">
-            {{
-              msgAnimation.isUser ? inputChat : `mensaje ${stepQuestion - 1}`
-            }}
+            {{ msgAnimation.isUser ? inputChat : questions[stepQuestion] }}
           </div>
         </div>
       </div>
@@ -122,12 +118,6 @@ onMounted(nextQuestion);
         </div>
         <button type="submit" class="p-1 bg-white">enviar</button>
       </form>
-      <div class="bg-white">
-        {{ msgAnimation.style }}
-      </div>
-      <div class="bg-white">
-        {{ msgAnimation.isUser ? inputChat : `mensaje ${stepQuestion - 1}` }}
-      </div>
     </div>
   </div>
 </template>

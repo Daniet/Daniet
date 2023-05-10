@@ -28,6 +28,7 @@ const submit = () => {
             '¿Como te llamas?',
             '¿Que te puedo Colaborar?',
             'Cuentame un poco mas',
+            '¿Quiere la respuesta por?',
           ]"
         />
         <UIShared :title="TITLE" :text="TEXT" />
